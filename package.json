@@ -1,0 +1,24 @@
+{
+  "name": "flask_ml_template",
+  "version": "1.0.0",
+  "description": "Flask machine learning dashboard template",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [
+    "flask",
+    "data",
+    "science",
+    "ml",
+    "machine",
+    "learning"
+  ],
+  "author": "Ismail Uddin",
+  "license": "MIT",
+  "dependencies": {
+    "grunt": "^1.0.4",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-watch": "^1.1.0"
+  }
+}

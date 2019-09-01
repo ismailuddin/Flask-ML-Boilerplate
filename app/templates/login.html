@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block head_scripts %}
+{% endblock %}
+
+{% block navbar %}
+{% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="column">
+            <div class="block">
+                <h1 class="block-title">
+                    Log in
+                </h1>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <blockquote>{{ message }}</blockquote>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+                <form action="" method="POST">
+                    {{ form.hidden_tag() }}
+                    <label for="email">Email address</label>
+                    <input type="email" name="email" id="email" value={{ form.email.data }}>
+
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+
+                    <label for="remember_me">Remember me</label>
+                    <input type="checkbox" name="remember_me" id="remember_me">
+
+                    <input type="submit" value="Log in">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

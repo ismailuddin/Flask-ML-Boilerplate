@@ -1,0 +1,19 @@
+<nav>
+    <a href="/" class="title">App.ai</a>
+    <div class="spacer"></div>
+    <div class="links">
+        <ul>
+
+            {% if current_user.is_anonymous %}
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% else %}
+            <li><a href="{{ url_for('logout') }}">Log out</a></li>
+            <li>|</li>
+            <li>
+                Hi {{ current_user.first_name }}
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

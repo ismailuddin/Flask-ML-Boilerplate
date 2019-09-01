@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block head_scripts %}
+{% endblock %}
+
+{% block navbar %}
+{% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="column">
+            <div class="block">
+                <h1 class="block-title">
+                    Register
+                </h1>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <blockquote>{{ message }}</blockquote>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <label for="first_name">First name</label>
+                    <input type="text" name="first_name" id="first_name" value={{ form.first_name.data }}>
+
+                    <label for="last_name">Last name</label>
+                    <input type="text" name="last_name" id="last_name" value={{ form.last_name.data }}>
+
+                    <label for="email">Email address</label>
+                    <input type="email" name="email" id="email" value={{ form.email.data }}>
+
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+
+                    <label for="password2">Confirm password</label>
+                    <input type="password" name="password2" id="password2">
+
+                    <input type="submit" value="Register">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
