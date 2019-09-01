@@ -805,6 +805,11 @@ body {
   font-family: "Lato";
 }
 
+p {
+  font-size: 1rem;
+  line-height: 1.3rem;
+}
+
 a {
   text-decoration: none;
   border: none;
@@ -892,7 +897,7 @@ input[type=text],
 input[type=email],
 input[type=password],
 input[type=checkbox] {
-  font-size: 1.3em;
+  font-size: 1rem;
   font-weight: 300;
   border-radius: 5px;
   display: block;
@@ -903,7 +908,7 @@ input[type=checkbox] {
 }
 
 label {
-  font-size: 1em;
+  font-size: 1rem;
   display: block;
   margin-bottom: 10px;
 }
