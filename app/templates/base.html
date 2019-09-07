@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./public/css/main.css">
+    <link rel="stylesheet" href="/public/css/main.css">
     <title>{{ page_title }}</title>
     {% block head_scripts %}{% endblock %}
 </head>
-<body>
+<body class="bg-gray-200">
     {% block navbar %}{% endblock %}
-    <div class="content">
+    <div class="content p-10 pt-24">
         {% block content %}{% endblock %}
     </div>
     {% block footer %}{% endblock %}

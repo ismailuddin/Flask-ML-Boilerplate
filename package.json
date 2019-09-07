@@ -1,24 +1,32 @@
 {
   "name": "flask_ml_template",
   "version": "1.0.0",
-  "description": "Flask machine learning dashboard template",
+  "description": "A boilerplate project structure for a Flask-based web app interface for running machine learning models using Celery and RabbitMQ.",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": ""
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
-  "keywords": [
-    "flask",
-    "data",
-    "science",
-    "ml",
-    "machine",
-    "learning"
-  ],
-  "author": "Ismail Uddin",
-  "license": "MIT",
-  "dependencies": {
-    "grunt": "^1.0.4",
-    "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-watch": "^1.1.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ismailuddin/Flask-ML-Boilerplate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ismailuddin/Flask-ML-Boilerplate/issues"
+  },
+  "homepage": "https://github.com/ismailuddin/Flask-ML-Boilerplate#readme",
+  "devDependencies": {
+    "css-loader": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
+    "postcss": "^7.0.18",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^8.0.0",
+    "tailwindcss": "^1.1.2",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.8"
   }
 }

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block head_scripts %}
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"></script>
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css"> -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+{% endblock %}
+
+{% block navbar %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <h1 class="text-xl font-semibold">
+                My jobs
+            </h1>
+            <div class="w-full" style="overflow-x:scroll;">
+                <table class="w-full text-left" id="mydata">
+                    <thead class="border-b-2 border-gray-300">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job in jobs %}
+                            <tr onclick="window.location='/jobs/status/{{job.scheduler_id}}'">
+                                <td>
+                                    {{job.id}}
+                                </td>
+                                <td>
+                                    {{job.name}}
+                                </td>
+                                <td>
+                                    {% if job.status == 100 %}
+                                        <div class="text-gray-500">
+                                            Pending
+                                        </div>
+                                    {% elif job.status == 200 %}
+                                        In progress
+                                    {% elif job.status == 300 %}
+                                        <div class="text-green-500">
+                                            Succeeded
+                                        </div>
+                                    {% elif job.status == 400 %}
+                                        <div class="text-red-500">
+                                            Failed
+                                        </div>
+                                    {% endif %}
+                                    <!-- {{job.status}} -->
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="flex flex-wrap">
+                <div class="p-3 items-center">
+                    <a href="?page=1" class="btn-sm"><<</a>
+                    {% if prev_url is not none %}
+                    <a href="{{ prev_url }}" class="btn-sm"><</a>
+                    {% endif %}
+                    {% if next_url is not none %}
+                    <a href="{{ next_url }}" class="btn-sm">></a>
+                    {% endif %}
+                    <a href="?page={{ last_page }}" class="btn-sm">>></a>
+
+                </div>
+                <div class="p-3 items-center">
+                    <label class="inline-block normal-case text-base font-normal mr-3" for="entries_per_page">Entries</label>
+                    <div class="inline-block relative">
+                        <select onchange="onSelect(this)" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="entries_per_page">
+                            <option {% if entries_per_page == 10 %}selected{% endif %} value="10">10</option>
+                            <option {% if entries_per_page == 20 %}selected{% endif %} value="20">20</option>
+                            <option {% if entries_per_page == 50 %}selected{% endif %} value="50">50</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('#mydata').DataTable({
+            paging: false,
+            searching: true
+        });
+    });
+    const onSelect = (selectObject) => {
+        const value = selectObject.value;
+        window.location.replace("/account/jobs?entries_per_page=" + value)
+    }
+</script>
+{% endblock %}

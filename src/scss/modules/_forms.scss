@@ -1,35 +1,30 @@
 input[type="text"],
 input[type="email"],
-input[type="password"],
-input[type="checkbox"] {
-    font-size: 1rem;
-    font-weight: 300;
-    border-radius: 5px;
-    display: block;
-    outline: none;
-    border: 1px solid rgba(black, 0.1);
-    padding: 5px 10px;
-    margin-bottom: 10px;
+input[type="password"] {
+    @apply .appearance-none .block .w-full .bg-gray-200;
+    @apply .text-gray-700 .rounded .py-3 .px-4;
+    @apply .mb-3 .leading-tight .border .border-gray-200;
+    &:focus {
+        @apply .outline-none;
+        @apply .bg-white;
+        @apply .border .border-gray-500;
+    }
 }
+
+input[type="search"] {
+    @apply .appearance-none .inline-block .bg-gray-200;
+    @apply .text-gray-700 .rounded .py-2 .px-4 .ml-2;
+    @apply .leading-tight .border .border-gray-200;
+    &:focus {
+        @apply .outline-none;
+        @apply .bg-white;
+        @apply .border .border-gray-500;
+    }
+}
+
 
 label {
-    font-size: 1rem;
-    display: block;
-    margin-bottom: 10px;
-
-}
-
-input[type="submit"] {
-    background: map-get($colors, 'blue-600');
-    border: none;
-    padding: 8px 15px;
-    color: white;
-    font-size: 1.2em;
-    border-radius: 5px;
-    transition: background-color 0.3s ease-in;
-
-    &:hover, &:focus, &:active {
-        background-color: map-get($colors, 'blue-400');
-    }
+    @apply .block .uppercase .tracking-wide .text-gray-700;
+    @apply .text-xs .font-bold .mb-2;
 
 }

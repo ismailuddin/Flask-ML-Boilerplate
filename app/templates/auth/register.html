@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block head_scripts %}
+{% endblock %}
+
+{% block navbar %}
+{% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card md:w-2/3 m-auto">
+        <h1 class="font-semibold text-xl">
+            Register
+        </h1>
+        <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae molestiae mollitia reprehenderit nemo eligendi atque incidunt architecto, vero et odit at voluptate assumenda voluptatum quas quae deleniti delectus consequuntur? Libero?
+        </p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <blockquote>{{ message }}</blockquote>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <form action="" method="post" class="w-full">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="column ">
+                    <label for="first_name">First name</label>
+                    <input type="text" class="">
+                </div>
+                <div class="column">
+                    <label for="last_name">Last name</label>
+                    <input type="text">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="email">Email address</label>
+                    <input type="email" name="email" id="email" value={{ form.email.data }}>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+                </div>
+                <div class="column">
+                    <label for="password2">Confirm password</label>
+                    <input type="password" name="password2" id="password2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <input class="btn" type="submit" value="Register">
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

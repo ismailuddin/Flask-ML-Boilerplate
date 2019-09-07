@@ -1,0 +1,69 @@
+.btn {
+    @apply .inline-block;
+    @apply .mt-2 .mr-5;
+    @apply .bg-blue-500;
+    @apply .rounded;
+    @apply .shadow;
+    @apply .px-6;
+    @apply .py-2;
+    @apply .text-blue-200;
+
+    &:hover {
+        @apply .text-white;
+    }
+}
+
+.btn-sm {
+    @apply .inline-block;
+    @apply .mt-2 .mr-2;
+    @apply .bg-blue-500;
+    @apply .rounded;
+    @apply .px-3;
+    @apply .py-1;
+    @apply .text-blue-200;
+
+    &:hover {
+        @apply .text-white;
+    }
+}
+
+.card {
+    @apply .bg-white;
+    @apply .rounded;
+    @apply .shadow-lg;
+    @apply .p-5;
+}
+
+table {
+    @apply .w-full .text-left;
+
+    th, td {
+        @apply .px-2 .py-2 .outline-none;
+    }
+
+    & > tbody > tr {
+        @apply .border-b .border-gray-200;
+        &:hover {
+            @apply .bg-gray-100;
+        }
+    }
+
+    thead {
+        @apply .border-b-2 .border-gray-300;
+
+        th {
+            background-repeat: no-repeat;
+            background-position-x: right;
+            background-position-y: center;
+        }
+        th.sorting {
+            background-image: url("https://cdn.datatables.net/1.10.19/images/sort_both.png");
+        }
+        th.sorting_desc {
+            background-image: url("https://cdn.datatables.net/1.10.19/images/sort_desc.png");
+        }
+        th.sorting_asc {
+            background-image: url("https://cdn.datatables.net/1.10.19/images/sort_asc.png");
+        }
+    }
+}

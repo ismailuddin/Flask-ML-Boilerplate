@@ -1,18 +1,17 @@
-from app import app, db
+from app import app, db, login_manager
 from app.models.users import User
+from flask import Blueprint
 from flask import render_template, request, redirect, flash, url_for
 from werkzeug.urls import url_parse
 from app.forms.login import LoginForm, RegistrationForm, flash_form_errors
 from flask_login import current_user, login_user, login_required, logout_user
 
 
-@app.route('/')
-def index():
-    return render_template("homepage.html", page_title="Home")
+auth = Blueprint("auth", __name__, template_folder="../templates/auth/")
 
 
 @login_required
-@app.route("/login", methods=["POST", "GET"])
+@auth.route("/login", methods=["POST", "GET"])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -21,7 +20,7 @@ def login():
         user = User.query.filter_by(email=request.form["email"]).first()
         if user is None or not user.check_password(request.form["password"]):
             flash("Invalid username or password")
-            return redirect(url_for("login"))
+            return redirect(url_for("auth.login"))
         remember_me = False
         if "remember_me" in request.form:
             remember_me = True
@@ -38,27 +37,33 @@ def login():
     )
 
 
-@app.route("/logout")
+@auth.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for("index"))
 
 
-@app.route("/register", methods=["POST", "GET"])
+@auth.route("/register", methods=["POST", "GET"])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm(request.form)
     if form.validate_on_submit():
-        user = User(
+        user = User.create_user(
             first_name=request.form["first_name"],
             last_name=request.form["last_name"],
-            email=request.form["email"]
+            email=request.form["email"],
+            password=request.form["password"]
+
         )
-        user.set_password(request.form["password"])
-        db.session.add(user)
-        db.session.commit()
-        flash("Successfully registered.")
-        return redirect(url_for("index"))
+        if user is not None:
+            flash("Successfully registered.")
+            return redirect(url_for("index"))
+        else:
+            flash("Error registering user. Please try again")
+            return redirect(url_for("index"))
     flash_form_errors(form)
     return render_template("register.html", form=form, page_title="Register")
+
+
+login_manager.login_view = "auth.login"

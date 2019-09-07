@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block head_scripts %}
+{% endblock %}
+
+{% block navbar %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                <div class="card">
+                    <h1>
+                        Create a new job
+                    </h1>
+                    <button class="btn" onclick="startJob()">Run job</button>
+                    <button style="display: none;" id="status_button" class="btn" onclick="getStatus()">Get job status</button>
+                    <p id="status"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let job_id = null;
+    const startJob = () => {
+        fetch("/jobs/run").then(res => {
+            return res.json()
+        }).then(result => {
+            job_id = result["task_id"];
+            const statusButton = document.getElementById("status_button");
+            statusButton.style.display = null;
+            console.log(result);
+        });
+    }
+
+    const getStatus = () => {
+        if (job_id !== null && job_id !== "") {
+            fetch(`/jobs/status/${job_id}`).then(res => {
+                return res.json()
+            }).then(json => {
+                const result = JSON.stringify(json);
+                const statusHTML = document.getElementById("status");
+                statusHTML.innerHTML = result;
+            })
+        }
+    }
+</script>
+{% endblock %}

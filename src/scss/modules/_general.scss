@@ -7,18 +7,8 @@
     }
 }
 
-body {
-    background-color: map-get($map: $colors, $key: 'grey-100');
-    margin: 0;
-    font-family: 'Lato';
-}
 
-p {
-    font-size: 1rem;
-    line-height: 1.3rem;
-}
-
-a {
+p > a {
     @include disable-a-decoration();
     color: inherit;
     border-bottom: 3px solid rgba(map-get($colors, 'blue-500'), 0.5);
@@ -30,28 +20,6 @@ a {
 }
 
 .content {
-    padding: 15px;
+    // padding: 15px;
 }
 
-.container {
-    width: 1024px;
-    margin: auto;
-}
-
-.block {
-    border-radius: 5px;
-    background-color: white;
-    padding: 15px;
-    margin: 10px;
-    box-sizing: border-box;
-    box-shadow: 0px 8px 16px -10px rgba(black, 0.3);
-
-    h1.block-title {
-        margin: 0;
-        font-weight: 300;
-        margin-bottom: 15px;
-        font-size: 1.5em;
-        border-bottom: 1px solid rgba(black, 0.1);
-        padding-bottom: 8px;
-    }
-}

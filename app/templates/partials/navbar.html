@@ -1,19 +1,33 @@
-<nav>
-    <a href="/" class="title">App.ai</a>
-    <div class="spacer"></div>
-    <div class="links">
-        <ul>
-
+<nav class="w-full z-50 flex items-center justify-between flex-wrap bg-white py-4 px-6 shadow-lg fixed">
+    <div class="flex items-center flex-shrink-0 text-gray-700 mr-6">
+        <a href="/">
+            <span class="font-semibold text-xl tracking-tight">ML.ai</span>
+        </a>
+    </div>
+    <div class="block md:hidden lg:hidden">
+        <button class="flex items-center px-3 py-2 border rounded bg-gray-500 text-gray-400 hover:text-white">
+            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+        </button>
+    </div>
+    <div class="w-full block flex-grow md:flex md:items-center md:w-auto">
+        <div class="text-md md:flex-grow text-right">
             {% if current_user.is_anonymous %}
-            <li><a href="{{ url_for('register') }}">Register</a></li>
-            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <a href="{{ url_for('auth.register') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">
+                Register
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">
+                Login
+            </a>
             {% else %}
-            <li><a href="{{ url_for('logout') }}">Log out</a></li>
-            <li>|</li>
-            <li>
-                Hi {{ current_user.first_name }}
-            </li>
+            <a href="{{ url_for('user_jobs') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">
+                Jobs
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">
+                Logout
+            </a>
+            |
+            Hi {{ current_user.first_name }}
             {% endif %}
-        </ul>
+        </div>
     </div>
 </nav>

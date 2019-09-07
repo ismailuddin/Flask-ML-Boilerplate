@@ -5,6 +5,8 @@ machine learning models using Celery and RabbitMQ.
 ## Requirements
 - Python 3.6 or newer
 - MySQL 8.X
+- RabbitMQ
+- Redis
 
 
 ## Usage
@@ -16,10 +18,13 @@ First clone the repository and `cd` into the project root. Create a virtual envi
 $ python -m venv venv
 $ source venv/bin/activate
 $ pip install -r requirements.txt
-$ export FLASK_APP=run.py
 ```
 
-Configure the `.env` file with the database URI and ensure the MySQL server is running.
+The queuing of machine learning jobs are handled by Celery, using RabbitMQ as the message broker and Redis to store the jobs' results. (Note: the Redis store merely stores the state of the jobs, but the actual ouput of the job should be saved to disk or in a database, with the path to this information stored in Redis). Thus, to use Celery, first install RabbitMQ and Redis.
+
+
+Configure the `.env` file with the MySQL database URI and ensure the MySQL server is running.
+You can now run the database migrations.
 
 ```shell
 $ flask db init

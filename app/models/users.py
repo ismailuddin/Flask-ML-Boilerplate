@@ -1,7 +1,9 @@
 from datetime import datetime
+from typing import List
+from sqlalchemy import exc
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import db, login
+from app import db, login_manager
 
 
 class User(UserMixin, db.Model):
@@ -10,6 +12,7 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(128))
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    jobs = db.relationship('Job', backref="user", lazy="dynamic")
     date_created = db.Column(db.DateTime, index=True,
                              default=datetime.utcnow())
     date_modified = db.Column(db.DateTime, index=True,
@@ -25,7 +28,26 @@ class User(UserMixin, db.Model):
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password_hash, password)
 
+    def get_jobs(self) -> List['Job']:
+        return self.jobs
 
-@login.user_loader
+    @classmethod
+    def create_user(cls, **kwargs) -> 'User':
+        user = cls(
+            first_name=kwargs["first_name"],
+            last_name=kwargs["last_name"],
+            email=kwargs["email"]
+        )
+        user.set_password(kwargs["password"])
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except exc.SQLAlchemyError:
+            db.session.rollback()
+            return None
+        return user
+
+
+@login_manager.user_loader
 def load_user(id: str) -> User:
     return User.query.get(int(id))

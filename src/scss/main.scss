@@ -1,9 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap');
 
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @import "modules/colours";
-@import "modules/grid";
 @import "modules/general";
-@import "modules/navbar";
+@import "modules/grid";
+// @import "modules/navbar";
 @import "modules/forms";
 @import "modules/components";
