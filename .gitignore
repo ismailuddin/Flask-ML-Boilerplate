@@ -1,5 +1,6 @@
 .vscode/
 migrations/
+public/css/*.css
 
 .DS_Store/
 
