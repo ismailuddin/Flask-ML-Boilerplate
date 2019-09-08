@@ -14,7 +14,7 @@ class MLJob(celery.Task):
         Job.update_job_status(scheduler_id=task_id, status=JobStatus.SUCCEEDED)
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
-        Job.update_job_status(scheduler_id=task_id, status=JobStatus.FAILED)
+        Job.set_job_failed(scheduler_id=task_id, result=einfo.exception)
 
 
 def despatch_job(
@@ -43,6 +43,8 @@ def run_prediction(self, arg1: str, arg2: str, job_id: str = None):
     Job.update_job_timing(start_time=datetime.utcnow(), job_id=job_id)
     for i in range(runs):
         Job.update_job_status(job_id=job_id, status=JobStatus.IN_PROGRESS)
+        if i == 2:
+            raise ValueError("Some weird error")
         self.update_state(
             state="IN_PROGRESS",
             meta={

@@ -22,7 +22,7 @@ class Job(db.Model):
     scheduler_id = db.Column(db.String(128), index=True)
     name = db.Column(db.String(128))
     status = db.Column(db.Enum(JobStatus), default=JobStatus.PENDING)
-    result = db.Column(db.String(128))
+    result = db.Column(db.String(2048))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
@@ -31,15 +31,6 @@ class Job(db.Model):
                              default=datetime.utcnow())
     date_modified = db.Column(db.DateTime, index=True,
                               default=datetime.utcnow())
-
-    def update_status(self, status: JobStatus) -> bool:
-        self.status = status
-        try:
-            db.session.commit()
-        except exc.SQLAlchemyError:
-            db.session.rollback()
-            return False
-        return True
 
     def update_scheduler_id(self, scheduler_id: str) -> bool:
         self.scheduler_id = scheduler_id
@@ -68,6 +59,12 @@ class Job(db.Model):
             job = Job.query.get(job_id)
         if job is not None:
             job.status = status
+        else:
+            dbLogger.warning(
+                "Could not find requested job by ID {} / scheduler ID {}".format(
+                    job_id, scheduler_id
+                )
+            )
         try:
             db.session.commit()
         except exc.SQLAlchemyError:
@@ -78,9 +75,14 @@ class Job(db.Model):
     @staticmethod
     def update_job_duration(job_id: int, duration: float) -> bool:
         job = Job.query.get(job_id)
-        dbLogger.info("Updating job duration")
         if job is not None:
             job.duration = duration
+        else:
+            dbLogger.warning(
+                "Could not find requested job by ID: {}".format(
+                    job_id
+                )
+            )
         try:
             db.session.commit()
         except exc.SQLAlchemyError as error:
@@ -90,7 +92,31 @@ class Job(db.Model):
         return True
 
     @staticmethod
-    def update_job_timing(job_id: int, start_time: datetime = None, end_time: datetime = None) -> bool:
+    def set_job_failed(scheduler_id: str, result: str) -> bool:
+        job = Job.query.filter_by(scheduler_id=scheduler_id).first()
+        if job is not None:
+            job.status = JobStatus.FAILED
+            job.result = result
+            job.end_time = datetime.utcnow()
+            job.duration = (job.end_time - job.start_time).total_seconds()
+        else:
+            dbLogger.warning(
+                "Could not find requested job by scheduler ID: {}".format(
+                    scheduler_id
+                )
+            )
+        try:
+            db.session.commit()
+        except exc.SQLAlchemyError as error:
+            dbLogger.error(error)
+            db.session.rollback()
+            return False
+        return True
+
+    @staticmethod
+    def update_job_timing(
+        job_id: int, start_time: datetime = None, end_time: datetime = None
+    ) -> bool:
         job = Job.query.get(job_id)
         if job is not None:
             if start_time is not None and end_time is not None:
@@ -102,6 +128,12 @@ class Job(db.Model):
                 job.start_time = start_time
             elif end_time is not None:
                 job.end_time = end_time
+        else:
+            dbLogger.warning(
+                "Could not find requested job by ID: {}".format(
+                    job_id
+                )
+            )
         try:
             db.session.commit()
         except exc.SQLAlchemyError as error:

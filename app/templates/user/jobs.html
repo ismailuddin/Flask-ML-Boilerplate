@@ -27,6 +27,7 @@
                             <th>Name</th>
                             <th>Status</th>
                             <th>Duration (seconds)</th>
+                            <th>Result</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,6 +59,9 @@
                                 </td>
                                 <td>
                                     {{ "%.3f" | format(job.duration) }}
+                                </td>
+                                <td>
+                                    {{ job.result }}
                                 </td>
                             </tr>
                         {% endfor %}
