@@ -19,10 +19,10 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     first_name = StringField("First name", validators=[
-        Required("First name is require")
+        Required("First name is required")
     ])
     last_name = StringField("Last name", validators=[
-        Required("Last name is require")
+        Required("Last name is required")
     ])
     email = StringField('Email', validators=[
         Required('Email field is required'),

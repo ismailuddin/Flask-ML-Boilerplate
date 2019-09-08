@@ -1,30 +1,38 @@
 from datetime import datetime
+from enum import Enum
 from app import db
 from sqlalchemy import exc
+import logging
+
+dbLogger = logging.getLogger("databaseLogger")
+
+
+class JobStatus(Enum):
+    PENDING = 100
+    IN_PROGRESS = 200
+    SUCCEEDED = 300
+    FAILED = 400
 
 
 class Job(db.Model):
     """Database model for 'Job' table which holds a list of all
     submitted jobs.
-
-    Column status (int):
-        100: Pending
-        200: In progress
-        300: Succeeded
-        400: Failed
     """
     id = db.Column(db.Integer, primary_key=True)
     scheduler_id = db.Column(db.String(128), index=True)
     name = db.Column(db.String(128))
-    status = db.Column(db.Integer, default=100)
+    status = db.Column(db.Enum(JobStatus), default=JobStatus.PENDING)
     result = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    start_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
+    duration = db.Column(db.Float, default=0)
     date_created = db.Column(db.DateTime, index=True,
                              default=datetime.utcnow())
     date_modified = db.Column(db.DateTime, index=True,
                               default=datetime.utcnow())
 
-    def update_status(self, status: int) -> bool:
+    def update_status(self, status: JobStatus) -> bool:
         self.status = status
         try:
             db.session.commit()
@@ -52,7 +60,7 @@ class Job(db.Model):
 
     @staticmethod
     def update_job_status(
-        scheduler_id: str = None, job_id: int = None, status: int = 100
+        status: JobStatus, scheduler_id: str = None, job_id: int = None
     ) -> bool:
         if scheduler_id is not None:
             job = Job.query.filter_by(scheduler_id=scheduler_id).first()
@@ -63,6 +71,41 @@ class Job(db.Model):
         try:
             db.session.commit()
         except exc.SQLAlchemyError:
+            db.session.rollback()
+            return False
+        return True
+
+    @staticmethod
+    def update_job_duration(job_id: int, duration: float) -> bool:
+        job = Job.query.get(job_id)
+        dbLogger.info("Updating job duration")
+        if job is not None:
+            job.duration = duration
+        try:
+            db.session.commit()
+        except exc.SQLAlchemyError as error:
+            dbLogger.error(error)
+            db.session.rollback()
+            return False
+        return True
+
+    @staticmethod
+    def update_job_timing(job_id: int, start_time: datetime = None, end_time: datetime = None) -> bool:
+        job = Job.query.get(job_id)
+        if job is not None:
+            if start_time is not None and end_time is not None:
+                dbLogger.error(
+                    "Start and end time trying to be set simulatenously"
+                )
+                return False
+            if start_time is not None:
+                job.start_time = start_time
+            elif end_time is not None:
+                job.end_time = end_time
+        try:
+            db.session.commit()
+        except exc.SQLAlchemyError as error:
+            dbLogger.error(error)
             db.session.rollback()
             return False
         return True

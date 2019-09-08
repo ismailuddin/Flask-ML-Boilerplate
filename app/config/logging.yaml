@@ -1,0 +1,36 @@
+version: 1
+formatters:
+  simple:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+    stream: ext://sys.stdout
+  mainFile:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: simple
+    filename: app/logs/main.log
+    maxBytes: 10485760
+    backupCount: 20
+    encoding: utf8
+  databaseFile:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    filename: app/logs/database.log
+    formatter: simple
+    maxBytes: 10485760
+    backupCount: 20
+    encoding: utf8
+loggers:
+  mainLogger:
+    level: DEBUG
+    handlers: [console, mainFile]
+  databaseLogger:
+    level: DEBUG
+    handlers: [databaseFile]
+root:
+  level: INFO
+  handlers: [console, mainFile]

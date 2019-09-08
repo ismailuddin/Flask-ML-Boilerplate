@@ -36,7 +36,14 @@ $ flask db upgrade # Performs the database migration
 To run the server for development, use the `flask` commands.
 
 ```shell
+$ source venv/bin/activate
 $ flask run
+```
+
+To launch the Celery worker:
+
+```shell
+$ celery worker -A app.celery --loglevel=info
 ```
 
 

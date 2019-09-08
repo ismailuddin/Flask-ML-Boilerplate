@@ -26,6 +26,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Status</th>
+                            <th>Duration (seconds)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,22 +39,25 @@
                                     {{job.name}}
                                 </td>
                                 <td>
-                                    {% if job.status == 100 %}
+                                    {% if job.status.value == 100 %}
                                         <div class="text-gray-500">
                                             Pending
                                         </div>
-                                    {% elif job.status == 200 %}
+                                    {% elif job.status.value == 200 %}
                                         In progress
-                                    {% elif job.status == 300 %}
+                                    {% elif job.status.value == 300 %}
                                         <div class="text-green-500">
                                             Succeeded
                                         </div>
-                                    {% elif job.status == 400 %}
+                                    {% elif job.status.value == 400 %}
                                         <div class="text-red-500">
                                             Failed
                                         </div>
                                     {% endif %}
                                     <!-- {{job.status}} -->
+                                </td>
+                                <td>
+                                    {{ "%.3f" | format(job.duration) }}
                                 </td>
                             </tr>
                         {% endfor %}

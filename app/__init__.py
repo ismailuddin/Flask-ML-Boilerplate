@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from celery import Celery
-from app.config import Config
+from app.config.flask import Config
+from app.config import logging
 
 app = Flask(__name__, static_folder="../public", static_url_path="/public")
 app.config.from_object(Config)

@@ -1,19 +1,21 @@
 import time
+from datetime import datetime
 from typing import Callable
 import random
 from app import celery
 from celery.contrib import rdb
-from app.models.jobs import Job
+from app.models.jobs import Job, JobStatus
 
 
 class MLJob(celery.Task):
     abstract = True
 
     def on_success(self, retval, task_id, args, kwargs):
-        Job.update_job_status(scheduler_id=task_id, status=300)
+        Job.update_job_status(scheduler_id=task_id, status=JobStatus.SUCCEEDED)
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
-        Job.update_job_status(scheduler_id=task_id, status=400)
+        Job.update_job_status(scheduler_id=task_id, status=JobStatus.FAILED)
+
 
 def despatch_job(
     func: Callable, user: int, fargs: tuple = (), fkwargs: dict = {}
@@ -21,7 +23,7 @@ def despatch_job(
     job = Job.create_job(
         user_id=user.id,
         name="adaf",
-        status=100
+        status=JobStatus.PENDING
     )
     if job is not None:
         fkwargs["job_id"] = job.id
@@ -35,10 +37,12 @@ def despatch_job(
 
 
 @celery.task(bind=True, base=MLJob)
-def run_prediction(self, arg1: str, arg2: str, job_id: str=None):
+def run_prediction(self, arg1: str, arg2: str, job_id: str = None):
     runs = random.randrange(1, 5)
+    start = time.time()
+    Job.update_job_timing(start_time=datetime.utcnow(), job_id=job_id)
     for i in range(runs):
-        Job.update_job_status(job_id=job_id, status=200)
+        Job.update_job_status(job_id=job_id, status=JobStatus.IN_PROGRESS)
         self.update_state(
             state="IN_PROGRESS",
             meta={
@@ -48,6 +52,9 @@ def run_prediction(self, arg1: str, arg2: str, job_id: str=None):
             }
         )
         time.sleep(1)
+    end = time.time()
+    Job.update_job_timing(end_time=datetime.utcnow(), job_id=job_id)
+    Job.update_job_duration(job_id=job_id, duration=(end - start))
     return {
         "current": i,
         "total": runs,
