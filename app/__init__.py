@@ -19,8 +19,10 @@ celery = Celery(
     backend=app.config["CELERY_RESULT_BACKEND"]
 )
 
-from app.routes import general
-from app.routes.auth import auth
+from .routes import general
+from .routes.auth import auth
+from .routes.admin import admin
 from app.models import users, jobs
 
 app.register_blueprint(auth)
+app.register_blueprint(admin)

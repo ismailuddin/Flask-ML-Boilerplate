@@ -19,14 +19,19 @@
                 Login
             </a>
             {% else %}
-            <a href="{{ url_for('user_jobs') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">
-                Jobs
-            </a>
-            <a href="{{ url_for('auth.logout') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">
-                Logout
-            </a>
-            |
-            Hi {{ current_user.first_name }}
+                {% if current_user.is_admin() %}
+                <a href="{{ url_for('admin.view_all_users') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">
+                    Users
+                </a>
+                {% endif %}
+                <a href="{{ url_for('user_jobs') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">
+                    Jobs
+                </a>
+                <a href="{{ url_for('auth.logout') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">
+                    Logout
+                </a>
+                |
+                Hi {{ current_user.first_name }}
             {% endif %}
         </div>
     </div>

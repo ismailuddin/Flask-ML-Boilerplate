@@ -1,3 +1,4 @@
+from enum import Enum
 from datetime import datetime
 from typing import List
 from sqlalchemy import exc
@@ -5,6 +6,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import db, login_manager
 
+class UserRoles(Enum):
+    VIEWER = 100
+    USER = 200
+    MANAGER = 300
+    ADMIN = 900
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -12,14 +18,20 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(128))
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    role = db.Column(db.Enum(UserRoles), default=UserRoles.USER)
     jobs = db.relationship('Job', backref="user", lazy="dynamic")
-    date_created = db.Column(db.DateTime, index=True,
-                             default=datetime.utcnow())
-    date_modified = db.Column(db.DateTime, index=True,
-                              default=datetime.utcnow())
+    date_created = db.Column(
+        db.DateTime, index=True, default=datetime.utcnow()
+    )
+    date_modified = db.Column(
+        db.DateTime, index=True, default=datetime.utcnow()
+    )
 
     def __repr__(self) -> str:
         return "<User {}>".format(self.email)
+
+    def is_admin(self) -> bool:
+        return True if self.role == UserRoles.ADMIN else False
 
     def set_password(self, password: str) -> None:
         self.password_hash = generate_password_hash(password)

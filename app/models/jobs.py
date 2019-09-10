@@ -27,10 +27,12 @@ class Job(db.Model):
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     duration = db.Column(db.Float, default=0)
-    date_created = db.Column(db.DateTime, index=True,
-                             default=datetime.utcnow())
-    date_modified = db.Column(db.DateTime, index=True,
-                              default=datetime.utcnow())
+    date_created = db.Column(
+        db.DateTime, index=True, default=datetime.utcnow()
+    )
+    date_modified = db.Column(
+        db.DateTime, index=True, default=datetime.utcnow()
+    )
 
     def update_scheduler_id(self, scheduler_id: str) -> bool:
         self.scheduler_id = scheduler_id
