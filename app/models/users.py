@@ -21,10 +21,10 @@ class User(UserMixin, db.Model):
     role = db.Column(db.Enum(UserRoles), default=UserRoles.USER)
     jobs = db.relationship('Job', backref="user", lazy="dynamic")
     date_created = db.Column(
-        db.DateTime, index=True, default=datetime.utcnow()
+        db.DateTime, index=True, default=datetime.utcnow
     )
     date_modified = db.Column(
-        db.DateTime, index=True, default=datetime.utcnow()
+        db.DateTime, index=True, default=datetime.utcnow
     )
 
     def __repr__(self) -> str:
