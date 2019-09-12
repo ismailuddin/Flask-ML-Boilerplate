@@ -1,6 +1,7 @@
 .vscode/
 migrations/
 public/css/*.css
+public/js/*.js
 
 .DS_Store/
 

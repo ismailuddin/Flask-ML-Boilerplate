@@ -24,6 +24,7 @@ class SortTable {
     /**
      * Sorts a table column
      * @param  {string} tableID
+     * @param  {number} columnID
      */
     sortColumnTable(tableID: string, columnID: number) {
         let table: any;
