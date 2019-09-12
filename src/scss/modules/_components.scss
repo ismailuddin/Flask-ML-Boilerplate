@@ -1,6 +1,7 @@
 .btn {
     @apply .inline-block;
-    @apply .mt-2 .mr-5;
+    @apply .mt-2;
+    @apply .mr-5;
     @apply .bg-blue-500;
     @apply .rounded;
     @apply .shadow;
@@ -15,10 +16,11 @@
 
 .btn-sm {
     @apply .inline-block;
-    @apply .mt-2 .mr-2;
+    @apply .mt-1;
+    @apply .mr-2;
     @apply .bg-blue-500;
     @apply .rounded;
-    @apply .px-3;
+    @apply .px-2;
     @apply .py-1;
     @apply .text-blue-200;
 
@@ -31,7 +33,7 @@
     @apply .bg-white;
     @apply .rounded;
     @apply .shadow-lg;
-    @apply .p-5;
+    @apply .p-8;
 }
 
 table {

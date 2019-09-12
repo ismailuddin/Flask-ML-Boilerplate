@@ -1,16 +1,25 @@
 const path = require('path');
 const MiniCssExtractPluguin = require('mini-css-extract-plugin');
-const FixStyleOnlyEntriesPlugin = require("webpack-fix-style-only-entries");
-
 
 module.exports = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-    entry: './src/scss/main.scss',
+    entry: {
+        main: './src/scss/main.scss',
+        table: './src/ts/table.ts'
+    },
     output: {
-        path: path.resolve(__dirname, 'public/')
+        path: path.resolve(__dirname, 'public/'),
+        filename: 'js/[name].js',
+        libraryTarget: 'var',
+        library: 'ML'
     },
     module: {
         rules: [
+            {
+                test: /\.(ts|js)$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
+            },
             {
                 test: /\.scss$/,
                 use: [
@@ -43,7 +52,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new FixStyleOnlyEntriesPlugin(),
         new MiniCssExtractPluguin({
             filename: 'css/[name].css',
             chunkFilename: 'css/[id].css'

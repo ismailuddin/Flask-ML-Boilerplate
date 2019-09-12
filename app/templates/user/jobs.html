@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block head_scripts %}
-<script
+<!-- <script
   src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
   integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
-  crossorigin="anonymous"></script>
+  crossorigin="anonymous"></script> -->
 <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css"> -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script> -->
 {% endblock %}
 
 {% block navbar %}
@@ -25,7 +25,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Status</th>
+                            <th >Status</th>
                             <th>Duration (seconds)</th>
                             <th>Result</th>
                         </tr>
@@ -69,8 +69,8 @@
                 </table>
 
             </div>
-            <div class="flex flex-wrap">
-                <div class="p-3 items-center">
+            <div class="flex justify-between flex-wrap">
+                <div class="py-3 items-center">
                     <a href="?page=1" class="btn-sm"><<</a>
                     {% if prev_url is not none %}
                     <a href="{{ prev_url }}" class="btn-sm"><</a>
@@ -81,7 +81,7 @@
                     <a href="?page={{ last_page }}" class="btn-sm">>></a>
 
                 </div>
-                <div class="p-3 items-center">
+                <div class="py-3 items-center">
                     <label class="inline-block normal-case text-base font-normal mr-3" for="entries_per_page">Entries</label>
                     <div class="inline-block relative">
                         <select onchange="onSelect(this)" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="entries_per_page">
@@ -103,7 +103,8 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
+<script src="/public/js/table.js"></script>
+<!-- <script>
     $(document).ready(function() {
         $('#mydata').DataTable({
             paging: false,
@@ -114,5 +115,5 @@
         const value = selectObject.value;
         window.location.replace("/account/jobs?entries_per_page=" + value)
     }
-</script>
+</script> -->
 {% endblock %}
