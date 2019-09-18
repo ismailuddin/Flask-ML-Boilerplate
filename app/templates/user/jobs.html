@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 
 {% block head_scripts %}
-<!-- <script
-  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
-  crossorigin="anonymous"></script> -->
-<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css"> -->
-<!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script> -->
 {% endblock %}
 
 {% block navbar %}
@@ -25,7 +19,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th >Status</th>
+                            <th>Status</th>
                             <th>Duration (seconds)</th>
                             <th>Result</th>
                         </tr>
@@ -71,14 +65,14 @@
             </div>
             <div class="flex justify-between flex-wrap">
                 <div class="py-3 items-center">
-                    <a href="?page=1" class="btn-sm"><<</a>
+                    <a href="?page=1" class="btn-sm pagination_btn"><<</a>
                     {% if prev_url is not none %}
-                    <a href="{{ prev_url }}" class="btn-sm"><</a>
+                    <a href="{{ prev_url }}" class="btn-sm pagination_btn"><</a>
                     {% endif %}
                     {% if next_url is not none %}
-                    <a href="{{ next_url }}" class="btn-sm">></a>
+                    <a href="{{ next_url }}" class="btn-sm pagination_btn">></a>
                     {% endif %}
-                    <a href="?page={{ last_page }}" class="btn-sm">>></a>
+                    <a href="?page={{ last_page }}" class="btn-sm pagination_btn">>></a>
 
                 </div>
                 <div class="py-3 items-center">
@@ -104,16 +98,28 @@
 
 {% block scripts %}
 <script src="/public/js/table.js"></script>
-<!-- <script>
-    $(document).ready(function() {
-        $('#mydata').DataTable({
-            paging: false,
-            searching: true
-        });
-    });
+<script>
+    const table = new ML.SortTable("mydata");
     const onSelect = (selectObject) => {
         const value = selectObject.value;
-        window.location.replace("/account/jobs?entries_per_page=" + value)
+        let origin = window.location.origin;
+        let pathname = window.location.pathname;
+        let query = window.location.search;
+        let parts = query.substr(1).split("&");
+        let found = false;
+        for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            if (part.includes("entries_per_page") || part == "") {
+                parts[i] = "entries_per_page=" + value;
+                found = true;
+            }
+        }
+        if (found === false) {
+            parts.push("entries_per_page=" + value);
+        }
+        query = "?" + parts.join("&");
+        window.location.replace(origin + pathname + query);
+        // window.location.replace("/account/jobs?entries_per_page=" + value)
     }
-</script> -->
+</script>
 {% endblock %}

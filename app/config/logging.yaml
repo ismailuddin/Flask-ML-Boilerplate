@@ -5,12 +5,12 @@ formatters:
 handlers:
   console:
     class: logging.StreamHandler
-    level: DEBUG
+    level: INFO
     formatter: simple
     stream: ext://sys.stdout
   mainFile:
     class: logging.handlers.RotatingFileHandler
-    level: DEBUG
+    level: INFO
     formatter: simple
     filename: app/logs/main.log
     maxBytes: 10485760

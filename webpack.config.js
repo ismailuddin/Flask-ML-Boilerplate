@@ -21,6 +21,15 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
+                test: /\.(png|svg|jpe?g|gif)$/i,
+                loader: 'file-loader',
+                options: {
+                    publicPath: '../svg/',
+                    outputPath: 'svg/',
+                    useRelativePaths: true
+                },
+            },
+            {
                 test: /\.scss$/,
                 use: [
                     {

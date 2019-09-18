@@ -65,18 +65,23 @@ def get_job_status(job_id: str):
 @app.route("/account/jobs")
 @login_required
 def user_jobs():
-    page = request.args.get('page', 1, type=int)
-    entries_per_page = request.args.get('entries_per_page', 10, type=int)
+    page = request.args.get('page', default=1, type=int)
+    entries_per_page = request.args.get('entries_per_page', default=10, type=int)
     jobs = current_user.get_jobs().paginate(
         page, entries_per_page, False
     )
     next_url = url_for("user_jobs", page=jobs.next_num) if jobs.has_next else None
     prev_url = url_for("user_jobs", page=jobs.prev_num) if jobs.has_prev else None
+    if next_url is not None:
+        next_url += "&entries_per_page={}".format(entries_per_page)
+    if prev_url is not None:
+        prev_url += "&entries_per_page={}".format(entries_per_page)
+
     return render_template(
         "user/jobs.html",
         jobs=jobs.items,
         next_url=next_url,
-        prev_url=prev_url,
-        last_page=jobs.pages,
+        prev_url=prev_url ,
+        last_page=str(jobs.pages) + "&entries_per_page={}".format(entries_per_page),
         entries_per_page=entries_per_page
     )

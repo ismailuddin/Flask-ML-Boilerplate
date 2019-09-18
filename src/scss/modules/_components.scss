@@ -17,7 +17,7 @@
 .btn-sm {
     @apply .inline-block;
     @apply .mt-1;
-    @apply .mr-2;
+    @apply .mr-1;
     @apply .bg-blue-500;
     @apply .rounded;
     @apply .px-2;
@@ -39,33 +39,44 @@
 table {
     @apply .w-full .text-left;
 
+    
     th, td {
         @apply .px-2 .py-2 .outline-none;
     }
-
+    
     & > tbody > tr {
         @apply .border-b .border-gray-200;
         &:hover {
             @apply .bg-gray-100;
         }
     }
-
+    
     thead {
         @apply .border-b-2 .border-gray-300;
-
+        
         th {
-            background-repeat: no-repeat;
-            background-position-x: right;
-            background-position-y: center;
-        }
-        th.sorting {
-            background-image: url("https://cdn.datatables.net/1.10.19/images/sort_both.png");
-        }
-        th.sorting_desc {
-            background-image: url("https://cdn.datatables.net/1.10.19/images/sort_desc.png");
-        }
-        th.sorting_asc {
-            background-image: url("https://cdn.datatables.net/1.10.19/images/sort_asc.png");
+            position: relative;
+            &.random::after {
+                background-image: url(./svg/icon-minus.svg);
+            }
+            &.asc::after {
+                background-image: url(./svg/icon-cheveron-up.svg);
+            }
+            &.desc::after {
+                background-image: url(./svg/icon-cheveron-down.svg);
+            }
+
+            &::after {
+                position: absolute;
+                right: 0;
+                top: 0;
+                content: '';
+                width: 100%;
+                height: 100%;
+                background-repeat: no-repeat;
+                background-position: right;
+                
+            }
         }
     }
 }
