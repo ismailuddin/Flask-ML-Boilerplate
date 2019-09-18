@@ -1,3 +1,6 @@
+import "../scss/svg/icon-arrow-left.svg";
+import "../scss/svg/icon-arrow-right.svg";
+
 class SortTable {
     tableID: string;
     table: HTMLTableElement;

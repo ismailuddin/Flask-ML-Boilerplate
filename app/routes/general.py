@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, make_response, jsonify, Response
-from flask import request, url_for
+from flask import request, url_for, redirect
 from flask_login import login_required, current_user
 from app.models.users import User
 from app.ml.predict import despatch_job, run_prediction
@@ -70,6 +70,11 @@ def user_jobs():
     jobs = current_user.get_jobs().paginate(
         page, entries_per_page, False
     )
+    # Redirect if requested page is past number of page for specified
+    # entries per page
+    if page > jobs.pages:
+        return redirect(url_for("user_jobs") + "?" + "entries_per_page={}".format(entries_per_page))
+    
     next_url = url_for("user_jobs", page=jobs.next_num) if jobs.has_next else None
     prev_url = url_for("user_jobs", page=jobs.prev_num) if jobs.has_prev else None
     if next_url is not None:

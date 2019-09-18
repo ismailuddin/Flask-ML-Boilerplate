@@ -21,11 +21,12 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.(png|svg|jpe?g|gif)$/i,
+                test: /\.(svg)$/i,
                 loader: 'file-loader',
                 options: {
                     publicPath: '../svg/',
                     outputPath: 'svg/',
+                    name: '[name].[ext]',
                     useRelativePaths: true
                 },
             },
