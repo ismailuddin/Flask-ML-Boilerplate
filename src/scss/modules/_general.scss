@@ -1,25 +1,32 @@
 @mixin disable-a-decoration {
-    text-decoration: none;
-    border: none;
+	text-decoration: none;
+	border: none;
 
-    &:hover, &:focus, &:active {
-        text-decoration: none;
-    }
+	&:hover,
+	&:focus,
+	&:active {
+		text-decoration: none;
+	}
 }
 
-
 p > a {
-    @include disable-a-decoration();
-    color: inherit;
-    border-bottom: 3px solid rgba(map-get($colors, 'blue-500'), 0.5);
-    transition: color 0.3s ease-in;
+	@include disable-a-decoration();
+	color: inherit;
+	border-bottom: 3px solid rgba(map-get($colors, 'blue-500'), 0.5);
+	transition: color 0.3s ease-in;
 
-    &:hover, &:focus, &:active {
-        color: map-get($colors, 'blue-700');
-    }
+	&:hover,
+	&:focus,
+	&:active {
+		color: map-get($colors, 'blue-700');
+	}
 }
 
 .content {
-    // padding: 15px;
+	// padding: 15px;
 }
 
+.hero {
+    background-color: #ebf8ff;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23bee3f8' fill-opacity='0.33'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}

@@ -1,4 +1,4 @@
-<nav class="w-full z-50 flex items-center justify-between flex-wrap bg-white py-4 px-6 shadow-lg fixed">
+<nav class="w-full z-50 flex items-center justify-between flex-wrap bg-white py-4 px-6 border-b border-gray-400fixed">
     <div class="flex items-center flex-shrink-0 text-gray-700 mr-6">
         <a href="/">
             <span class="font-semibold text-xl tracking-tight">ML.ai</span>
@@ -9,7 +9,7 @@
             <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
         </button>
     </div>
-    <div class="w-full block flex-grow md:flex md:items-center md:w-auto">
+    <div class="w-full block flex-grow md:flex md:items-center md:w-auto sm:hidden">
         <div class="text-md md:flex-grow text-right">
             {% if current_user.is_anonymous %}
             <a href="{{ url_for('auth.register') }}" class="block mt-4 md:inline-block md:mt-0 text-gray-600 hover:text-gray-500 ml-4">

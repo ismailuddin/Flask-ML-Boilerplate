@@ -29,33 +29,127 @@
     }
 }
 
+.btn-action {
+
+    &-blue {
+        @apply .bg-blue-200 .text-blue-500;
+        &:hover {
+            @apply .bg-blue-500 .text-white;
+        }
+    }
+
+    &-green {
+        @apply .bg-green-200 .text-green-500;
+        &:hover {
+            @apply .bg-green-500 .text-white;
+        }
+    }
+
+    &-red {
+        @apply .bg-red-200 .text-red-500;
+        &:hover {
+            @apply .bg-red-500 .text-white;
+        }
+    }
+
+
+    @apply .rounded-full;
+    @apply .uppercase .px-3 .py-1 .text-xs .font-bold;
+    @apply .mx-1;
+    transition: all 0.3s ease;
+
+}
+
+.pagination {
+    a {
+        @apply .rounded-full .bg-gray-200 .text-sm .mx-1 .text-center .font-medium;
+        width: 34px;
+        height: 34px;
+        display: inline-block;
+        padding: 6px 8px;
+        transition: all 0.3s ease;
+        position: relative;
+
+        &.active {
+            @apply .bg-gray-700 .text-white;
+
+            &:hover {
+                @apply .bg-gray-500;
+            }
+        }
+
+        &.prev::before {
+            background-image: url(./svg/icon-cheveron-left.svg);
+        }
+        &.next::before {
+            background-image: url(./svg/icon-cheveron-right.svg);
+        }
+        &::before {
+            background-repeat: no-repeat;
+            background-position: center;
+            content: '';
+            display: block;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        &:hover {
+            @apply .bg-gray-400;
+        }
+    }
+}
+
+.pagination-btn {
+    & > svg {
+        fill: white;
+        margin-top: 1px;
+        margin-bottom: 2px;
+        display: inline-block;
+    }
+}
+
 .card {
     @apply .bg-white;
     @apply .rounded;
     @apply .shadow-lg;
-    @apply .p-8;
+    @apply .px-8 .py-5;
 }
 
 table {
-    @apply .w-full .text-left;
+    @apply .text-left .mt-4;
+    min-width: 1024px;
 
     
     th, td {
-        @apply .px-2 .py-2 .outline-none;
+        @apply .px-4 .py-2 .outline-none;
     }
     
     & > tbody > tr {
         @apply .border-b .border-gray-200;
+
+        & > td >.actions {
+            display: inline-block;
+            opacity: 0;
+        }
         &:hover {
             @apply .bg-gray-100;
+            & > td > .actions {
+                opacity: 1;
+            }
         }
     }
     
     thead {
-        @apply .border-b-2 .border-gray-300;
+        // @apply .border-b .border-gray-400;
+        @apply .bg-gray-200 .uppercase .text-gray-600;
         
         th {
             position: relative;
+            @apply .px-4 .py-3 .text-sm;
+
             &.random::after {
                 background-image: url(./svg/icon-minus.svg);
             }
@@ -68,7 +162,7 @@ table {
 
             &::after {
                 position: absolute;
-                right: 0;
+                right: 8px;
                 top: 0;
                 content: '';
                 width: 100%;

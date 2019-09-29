@@ -66,27 +66,37 @@ def get_job_status(job_id: str):
 @login_required
 def user_jobs():
     page = request.args.get('page', default=1, type=int)
-    entries_per_page = request.args.get('entries_per_page', default=10, type=int)
+    entries = request.args.get('entries', default=10, type=int)
     jobs = current_user.get_jobs().paginate(
-        page, entries_per_page, False
+        page, entries, False
     )
     # Redirect if requested page is past number of page for specified
     # entries per page
     if page > jobs.pages:
-        return redirect(url_for("user_jobs") + "?" + "entries_per_page={}".format(entries_per_page))
+        return redirect(url_for("user_jobs") + "?" + "entries={}".format(entries))
     
-    next_url = url_for("user_jobs", page=jobs.next_num) if jobs.has_next else None
-    prev_url = url_for("user_jobs", page=jobs.prev_num) if jobs.has_prev else None
-    if next_url is not None:
-        next_url += "&entries_per_page={}".format(entries_per_page)
-    if prev_url is not None:
-        prev_url += "&entries_per_page={}".format(entries_per_page)
+    prev_url = url_for("user_jobs", page=jobs.prev_num, entries=entries
+    ) if jobs.has_prev else None
+    next_url = url_for(
+        "user_jobs", page=jobs.next_num, entries=entries
+    ) if jobs.has_next else None
+    last_url = url_for("user_jobs", page=jobs.pages, entries=entries)
+
+    page_1 = url_for("user_jobs", page=1, entries=entries)
+    page_2 = url_for("user_jobs", page=2, entries=entries)
+    # if next_url is not None:
+    #     next_url += "&entries={}".format(entries)
+    # if prev_url is not None:
+    #     prev_url += "&entries={}".format(entries)
 
     return render_template(
         "user/jobs.html",
         jobs=jobs.items,
+        page=page,
         next_url=next_url,
-        prev_url=prev_url ,
-        last_page=str(jobs.pages) + "&entries_per_page={}".format(entries_per_page),
-        entries_per_page=entries_per_page
+        prev_url=prev_url,
+        page_1=page_1,
+        page_2=page_2,
+        last_url=last_url,
+        entries=entries
     )

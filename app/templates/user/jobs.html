@@ -8,85 +8,104 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="card">
-            <h1 class="text-xl font-semibold">
-                My jobs
-            </h1>
-            <div class="w-full" style="overflow-x:scroll;">
-                <table class="w-full text-left" id="mydata">
-                    <thead class="border-b-2 border-gray-300">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Duration (seconds)</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for job in jobs %}
-                            <tr onclick="window.location='/jobs/status/{{job.scheduler_id}}'">
-                                <td>
-                                    {{job.id}}
-                                </td>
-                                <td>
-                                    {{job.name}}
-                                </td>
-                                <td>
-                                    {% if job.status.value == 100 %}
-                                        <div class="text-gray-500">
-                                            Pending
-                                        </div>
-                                    {% elif job.status.value == 200 %}
-                                        In progress
-                                    {% elif job.status.value == 300 %}
-                                        <div class="text-green-500">
-                                            Succeeded
-                                        </div>
-                                    {% elif job.status.value == 400 %}
-                                        <div class="text-red-500">
-                                            Failed
-                                        </div>
-                                    {% endif %}
-                                    <!-- {{job.status}} -->
-                                </td>
-                                <td>
-                                    {{ "%.3f" | format(job.duration) }}
-                                </td>
-                                <td>
-                                    {{ job.result }}
-                                </td>
+    <div class="content p-10">
+        <div class="container">
+            <div class="card">
+                <h1 class="text-3xl font-semibold">
+                    My jobs
+                </h1>
+                <h3 class="text-gray-600">
+                    List of all jobs created 
+                </h3>
+                <div class="w-full" style="overflow-x:scroll;">
+                    <table class="w-full text-left" id="mydata">
+                        <thead class="">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Duration (seconds)</th>
+                                <th>Result</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-            </div>
-            <div class="flex justify-between flex-wrap">
-                <div class="py-3 items-center">
-                    <a href="?page=1" class="btn-sm pagination_btn"><<</a>
-                    {% if prev_url is not none %}
-                    <a href="{{ prev_url }}" class="btn-sm pagination_btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M5.41 11H21a1 1 0 0 1 0 2H5.41l5.3 5.3a1 1 0 0 1-1.42 1.4l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.42 1.4L5.4 11z"/></svg>
-                    </a>
-                    {% endif %}
-                    {% if next_url is not none %}
-                    <a href="{{ next_url }}" class="btn-sm pagination_btn">></a>
-                    {% endif %}
-                    <a href="?page={{ last_page }}" class="btn-sm pagination_btn">>></a>
-
+                        </thead>
+                        <tbody>
+                            {% for job in jobs %}
+                                <tr onclick="window.location='/jobs/status/{{job.scheduler_id}}'">
+                                    <td>
+                                        {{job.id}}
+                                    </td>
+                                    <td>
+                                        {{job.name}}
+                                    </td>
+                                    <td>
+                                        {% if job.status.value == 100 %}
+                                            <div class="text-gray-500">
+                                                Pending
+                                            </div>
+                                        {% elif job.status.value == 200 %}
+                                            In progress
+                                        {% elif job.status.value == 300 %}
+                                            <div class="text-green-500">
+                                                Succeeded
+                                            </div>
+                                        {% elif job.status.value == 400 %}
+                                            <div class="text-red-500">
+                                                Failed
+                                            </div>
+                                        {% endif %}
+                                        <!-- {{job.status}} -->
+                                    </td>
+                                    <td>
+                                        {{ "%.3f" | format(job.duration) }}
+                                    </td>
+                                    <td>
+                                        {{ job.result }}
+                                        <div class="actions float-right">
+                                            <a href="/jobs/status/{{job.scheduler_id}}" class="btn-action btn-action-green">View</a>
+                                            <a href="/jobs/status/{{job.scheduler_id}}" class="btn-action btn-action-blue">Edit</a>
+                                            <a href="/jobs/status/{{job.scheduler_id}}" class="btn-action btn-action-red">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+    
                 </div>
-                <div class="py-3 items-center">
-                    <label class="inline-block normal-case text-base font-normal mr-3" for="entries_per_page">Entries</label>
-                    <div class="inline-block relative">
-                        <select onchange="onSelect(this)" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="entries_per_page">
-                            <option {% if entries_per_page == 10 %}selected{% endif %} value="10">10</option>
-                            <option {% if entries_per_page == 20 %}selected{% endif %} value="20">20</option>
-                            <option {% if entries_per_page == 50 %}selected{% endif %} value="50">50</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                <div class="flex justify-between flex-wrap">
+                    <div class="py-3 pagination inline-flex">
+                        <a href="{{ prev_url }}" class="prev"></a>
+                        <a href="{{ page_1 }}" class="active">1</a>
+                        <a href="{{ page_2 }}" class="">2</a>
+                        <a href="" class="">...</a>
+                        <a href="{{ last_url }}" class="">20</a>
+                        <a href="{{ next_url }}" class="next"></a>
+                    </div>
+                    <div class="py-3 items-center">
+                        <a href="?page=1" class="btn-sm pagination_btn">1</a>
+                        {% if prev_url is not none %}
+                        <a href="{{ prev_url }}" class="btn-sm pagination-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path class="heroicon-ui" d="M5.41 11H21a1 1 0 0 1 0 2H5.41l5.3 5.3a1 1 0 0 1-1.42 1.4l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.42 1.4L5.4 11z"/></svg>
+                        </a>
+                        {% endif %}
+                        {% if next_url is not none %}
+                        <a href="{{ next_url }}" class="btn-sm pagination-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path class="heroicon-ui" d="M18.59 13H3a1 1 0 0 1 0-2h15.59l-5.3-5.3a1 1 0 1 1 1.42-1.4l7 7a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.42-1.4l5.3-5.3z"/></svg>
+                        </a>
+                        {% endif %}
+                        <a href="?page={{ last_page }}" class="btn-sm pagination-btn">{{ n_pages }}</a>
+                    </div>
+                    <div class="py-3 items-center">
+                        <label class="inline-block normal-case text-base font-normal mr-3" for="entries_per_page">Entries</label>
+                        <div class="inline-block relative">
+                            <select onchange="onSelect(this)" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="entries_per_page">
+                                <option {% if entries_per_page == 10 %}selected{% endif %} value="10">10</option>
+                                <option {% if entries_per_page == 20 %}selected{% endif %} value="20">20</option>
+                                <option {% if entries_per_page == 50 %}selected{% endif %} value="50">50</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                            </div>
                         </div>
                     </div>
                 </div>

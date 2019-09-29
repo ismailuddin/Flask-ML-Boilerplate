@@ -10,9 +10,8 @@
 </head>
 <body class="bg-gray-200">
     {% block navbar %}{% endblock %}
-    <div class="content p-10 pt-24">
-        {% block content %}{% endblock %}
-    </div>
+    {% block content %}{% endblock %}
+    
     {% block footer %}{% endblock %}
     {% block scripts %}{% endblock %}
 </body>
