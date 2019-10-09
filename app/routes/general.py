@@ -1,3 +1,4 @@
+import math
 from app import app, db
 from flask import render_template, make_response, jsonify, Response
 from flask import request, url_for, redirect
@@ -62,6 +63,25 @@ def get_job_status(job_id: str):
     return jsonify(response)
 
 
+def build_pagination(current_page: int, total_pages: int, n_of_buttons: int) -> list:
+    inner_buttons = []
+    n, N = 1, total_pages
+    d = math.floor((n_of_buttons - 2) / 2)
+    if current_page <= (n + (n_of_buttons - 2)):
+        for i in range(1, n_of_buttons - 1):
+            inner_buttons.append(n + i)
+    elif current_page > (n + (n_of_buttons - 2)) and (current_page + d) < N:
+        d = -1 * d
+        _page = current_page + d
+        for i in range(n_of_buttons - 2):
+            inner_buttons.append(_page)
+            _page += 1
+    elif current_page >= N - (n_of_buttons - 2):
+        for i in range(1, n_of_buttons - 1)[::-1]:
+            inner_buttons.append(N - i)
+    return inner_buttons
+
+
 @app.route("/account/jobs")
 @login_required
 def user_jobs():
@@ -74,29 +94,34 @@ def user_jobs():
     # entries per page
     if page > jobs.pages:
         return redirect(url_for("user_jobs") + "?" + "entries={}".format(entries))
-    
+
+    pagination_buttons = build_pagination(page, jobs.pages, 5)
+
+    button_list = []
+    for page_number in pagination_buttons:
+        button_list.append({
+            "number": page_number,
+            "url": url_for("user_jobs", page=page_number, entries=entries)
+        })
+
+    first_url = url_for("user_jobs", page=1, entries=entries)
     prev_url = url_for("user_jobs", page=jobs.prev_num, entries=entries
-    ) if jobs.has_prev else None
+                       ) if jobs.has_prev else ""
     next_url = url_for(
         "user_jobs", page=jobs.next_num, entries=entries
-    ) if jobs.has_next else None
+    ) if jobs.has_next else ""
     last_url = url_for("user_jobs", page=jobs.pages, entries=entries)
 
-    page_1 = url_for("user_jobs", page=1, entries=entries)
-    page_2 = url_for("user_jobs", page=2, entries=entries)
-    # if next_url is not None:
-    #     next_url += "&entries={}".format(entries)
-    # if prev_url is not None:
-    #     prev_url += "&entries={}".format(entries)
 
     return render_template(
         "user/jobs.html",
         jobs=jobs.items,
         page=page,
-        next_url=next_url,
+        first_url=first_url,
         prev_url=prev_url,
-        page_1=page_1,
-        page_2=page_2,
+        next_url=next_url,
         last_url=last_url,
+        total_pages=jobs.pages,
+        button_list=button_list,
         entries=entries
     )
