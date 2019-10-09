@@ -39,17 +39,19 @@
                                     </td>
                                     <td>
                                         {% if job.status.value == 100 %}
-                                            <div class="text-gray-500">
+                                            <div class="rounded-full bg-gray-300 text-black px-2 py-0 inline-block text-sm">
                                                 Pending
                                             </div>
                                         {% elif job.status.value == 200 %}
-                                            In progress
+                                            <div class="rounded-full bg-gray-300 text-black px-2 py-0 inline-block text-sm">
+                                                In progress
+                                            </div>
                                         {% elif job.status.value == 300 %}
-                                            <div class="text-green-500">
+                                            <div class="rounded-full bg-green-600 text-white px-2 py-0 inline-block text-sm">
                                                 Succeeded
                                             </div>
                                         {% elif job.status.value == 400 %}
-                                            <div class="text-red-500">
+                                            <div class="rounded-full bg-red-600 text-white px-2 py-0 inline-block text-sm">
                                                 Failed
                                             </div>
                                         {% endif %}
