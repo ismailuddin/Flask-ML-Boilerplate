@@ -12,7 +12,7 @@ importlib-metadata==0.20
 itsdangerous==1.1.0
 Jinja2==2.10.1
 kombu==4.6.4
-Mako==1.1.0
+Mako==1.2.2
 MarkupSafe==1.1.1
 more-itertools==7.2.0
 mysqlclient==1.4.4
